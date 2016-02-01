@@ -1,5 +1,7 @@
 package com.fernandocejas.frodo.internal;
 
+import com.fernandocejas.frodo.internal.observable.ObservableInfo;
+
 public class MessageManager {
 
   private final MessageBuilder messageBuilder;
@@ -18,46 +20,46 @@ public class MessageManager {
     debugLog.log(tag, message);
   }
 
-  public void printObservableInfo(FrodoObservable.ObservableInfo observableInfo) {
+  public void printObservableInfo(ObservableInfo observableInfo) {
     final String message = messageBuilder.buildObservableInfoMessage(observableInfo);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public void printObservableOnSubscribe(FrodoObservable.ObservableInfo observableInfo,
-      String threadName) {
+  public void printObservableOnSubscribe(ObservableInfo observableInfo) {
+    final String message = messageBuilder.buildObservableOnSubscribeMessage(observableInfo);
+    this.printMessage(observableInfo.getClassSimpleName(), message);
+  }
+
+  public <T> void printObservableOnNextWithValue(ObservableInfo observableInfo, T value) {
     final String message =
-        messageBuilder.buildObservableOnSubscribeMessage(observableInfo, threadName);
+        messageBuilder.buildObservableOnNextWithValueMessage(observableInfo, value);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public <T> void printObservableOnNext(FrodoObservable.ObservableInfo observableInfo, T value) {
-    final String message = messageBuilder.buildObservableOnNextMessage(observableInfo, value);
+  public void printObservableOnNext(ObservableInfo observableInfo) {
+    final String message = messageBuilder.buildObservableOnNextMessage(observableInfo);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public void printObservableOnError(FrodoObservable.ObservableInfo observableInfo,
+  public void printObservableOnError(ObservableInfo observableInfo,
       Throwable throwable) {
     final String message =
         messageBuilder.buildObservableOnErrorMessage(observableInfo, throwable.getMessage());
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public void printObservableOnCompleted(FrodoObservable.ObservableInfo observableInfo) {
+  public void printObservableOnCompleted(ObservableInfo observableInfo) {
     final String message = messageBuilder.buildObservableOnCompletedMessage(observableInfo);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public void printObservableOnTerminate(FrodoObservable.ObservableInfo observableInfo,
-      long executionTimeMillis,
-      int emittedElements) {
-    final String message = messageBuilder.buildObservableOnTerminateMessage(observableInfo,
-        String.valueOf(executionTimeMillis), emittedElements);
+  public void printObservableOnTerminate(ObservableInfo observableInfo) {
+    final String message = messageBuilder.buildObservableOnTerminateMessage(observableInfo);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
-  public void printObservableOnUnsubscribe(FrodoObservable.ObservableInfo observableInfo,
-      String threadName) {
-    final String message = messageBuilder.buildObservableOnUnsubscribeMessage(observableInfo, threadName);
+  public void printObservableOnUnsubscribe(ObservableInfo observableInfo) {
+    final String message = messageBuilder.buildObservableOnUnsubscribeMessage(observableInfo);
     this.printMessage(observableInfo.getClassSimpleName(), message);
   }
 
@@ -74,17 +76,24 @@ public class MessageManager {
 
   public void printSubscriberOnError(String subscriberName, String error, long executionTimeMillis,
       int receivedItems) {
-    final String message =
-        messageBuilder.buildSubscriberOnErrorMessage(subscriberName, error, executionTimeMillis,
+    final String itemTimeMessage =
+        messageBuilder.buildSubscriberItemTimeMessage(subscriberName, executionTimeMillis,
             receivedItems);
-    this.printMessage(subscriberName, message);
+    final String onErrorMessage =
+        messageBuilder.buildSubscriberOnErrorMessage(subscriberName, error);
+    this.printMessage(subscriberName, itemTimeMessage);
+    this.printMessage(subscriberName, onErrorMessage);
   }
 
   public void printSubscriberOnCompleted(String subscriberName, long executionTimeMillis,
       int receivedItems) {
-    final String message = messageBuilder.buildSubscriberOnCompletedMessage(subscriberName,
-        executionTimeMillis, receivedItems);
-    this.printMessage(subscriberName, message);
+    final String itemTimeMessage =
+        messageBuilder.buildSubscriberItemTimeMessage(subscriberName, executionTimeMillis,
+            receivedItems);
+    final String onCompleteMessage =
+        messageBuilder.buildSubscriberOnCompletedMessage(subscriberName);
+    this.printMessage(subscriberName, itemTimeMessage);
+    this.printMessage(subscriberName, onCompleteMessage);
   }
 
   public void printSubscriberRequestedItems(String subscriberName, long requestedItems) {
@@ -96,5 +105,18 @@ public class MessageManager {
   public void printSubscriberUnsubscribe(String subscriberName) {
     final String message = messageBuilder.buildSubscriberUnsubscribeMessage(subscriberName);
     this.printMessage(subscriberName, message);
+  }
+
+  public void printObservableItemTimeInfo(ObservableInfo observableInfo) {
+    final String message = messageBuilder.buildObservableItemTimeInfoMessage(observableInfo);
+    this.printMessage(observableInfo.getClassSimpleName(), message);
+  }
+
+  public void printObservableThreadInfo(ObservableInfo observableInfo) {
+    if (observableInfo.getSubscribeOnThread().isPresent() ||
+        observableInfo.getObserveOnThread().isPresent()) {
+      final String message = messageBuilder.buildObservableThreadInfoMessage(observableInfo);
+      this.printMessage(observableInfo.getClassSimpleName(), message);
+    }
   }
 }

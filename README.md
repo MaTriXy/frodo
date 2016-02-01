@@ -1,6 +1,6 @@
 
 
-Frodo for Android
+Frodo 
 =========================
 
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
@@ -15,7 +15,7 @@ It generates and weaves code based on annotations only on ```debug``` versions o
 Main Features
 -----------------
 
-- **@RxLogObservable:** Annotated methods which return ```rx.Observables``` will print the following information on android logcat when emitting items:
+- **@RxLogObservable:** Annotated methods which return ```rx.Observables``` will print the following information when emitting items:
 
 <img width="767" alt="frodo_observable" src="https://cloud.githubusercontent.com/assets/1360604/10925000/ee937c08-828a-11e5-97ac-bb13b7d469f8.png">
 
@@ -25,9 +25,24 @@ Main Features
         return Observable.just(buildDummyList());
     }
 ```
+<br>
+- **@RxLogObservable.Scope Options:** It is possible to narrow down the debug information shown by adding a debugging scope to @RxLogObservable annotation. 
+
+     -  **Scope.EVERYTHING:** Logs stream data, schedulers and rx.Observable events. Default.
+     -  **Scope.STREAM:** Logs rx.Observable emitted items plus total execution time.
+     -  **Scope.SCHEDULERS:** Logs schedulers where the annotated rx.Observable operates on.
+     -  **Scope.EVENTS:** Logs rx.Observable events only.
+     -  **Scope.NOTHING:** Turns off logging for the annotated rx.Observable.
+
+```java
+    @RxLogObservable(Scope.STREAM)
+    public Observable<List<MyDummyClass>> list() {
+        return Observable.just(buildDummyList());
+    }
+```
 
 <br>
-- **@RxLogSubscriber:** Annotated classes which are of type ```rx.Subscriber``` will print the following information on android logcat when receiving items from an ```rx.Observable```:
+- **@RxLogSubscriber:** Annotated classes which are of type ```rx.Subscriber``` will print the following information when receiving items from an ```rx.Observable```:
 
 <img width="980" alt="frodo_subscriber" src="https://cloud.githubusercontent.com/assets/1360604/10925010/fa76523e-828a-11e5-8607-1611aef61add.png">
 
@@ -78,18 +93,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.fernandocejas.frodo'
 ```
 
-
-<br>
-Under the hoods
------------------
-
-[Debugging RxJava on Android](http://fernandocejas.com/2015/11/05/debugging-rxjava-on-android/)
-
-[Aspect Oriented Programming in Android](http://fernandocejas.com/2014/08/03/aspect-oriented-programming-in-android/)
-
-[Presentation AOP + Frodo](https://speakerdeck.com/android10/android-aspect-oriented-programming)
-
-
 <br>
 Known issues
 -----------------
@@ -102,27 +105,15 @@ android {
 }
 ```
 
-
 <br>
-Local Development
+Frodo WIKI
 -----------------
-
-Here are some useful Gradle commands for executing and installing the library:
-
- * `./install_frodo.sh` - One time execution command for installing frodo library and dependencies.
- * `./gradlew installFrodoApi` - Installs Frodo Api dependencies.
- * `./gradlew installFrodoRuntime` - Installs Frodo Runtime dependencies.
- * `./gradlew installFrodoPlugin` - Installs Frodo gradle plugin.
- * `./gradlew installFrodoAndroidSample` - Build and installs everything plus android application sample.
- * `./gradlew runUnitTests` - Run unit tests.
-
-<br>
-Code style
------------------
-
-Here you can download and install the java codestyle.
-https://github.com/android10/java-code-styles
-
+For complete information, features and usage, refer to the [WIKI](https://github.com/android10/frodo/wiki):
+- [@RxLogObservable](https://github.com/android10/frodo/wiki/@RxLogObservable)
+- [@RxLogSubscriber](http://reactivex.io/documentation/observable.html)
+- [Release Notes](https://github.com/android10/frodo/wiki/Release-Notes)
+- [Development](https://github.com/android10/frodo/wiki/Development)
+- [Frodo under the hoods](https://github.com/android10/frodo/wiki/Under-the-hoods)
 
 <br>
 License
