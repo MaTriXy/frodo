@@ -91,6 +91,12 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.fernandocejas.frodo'
+
+//By default frodo is ON on debug build variants, although
+//we can enable-disable it with this configuration.
+frodo {
+  enabled = true
+}
 ```
 
 <br>
@@ -110,7 +116,7 @@ Frodo WIKI
 -----------------
 For complete information, features and usage, refer to the [WIKI](https://github.com/android10/frodo/wiki):
 - [@RxLogObservable](https://github.com/android10/frodo/wiki/@RxLogObservable)
-- [@RxLogSubscriber](http://reactivex.io/documentation/observable.html)
+- [@RxLogSubscriber](https://github.com/android10/frodo/wiki/@RxLogSubscriber)
 - [Release Notes](https://github.com/android10/frodo/wiki/Release-Notes)
 - [Development](https://github.com/android10/frodo/wiki/Development)
 - [Frodo under the hoods](https://github.com/android10/frodo/wiki/Under-the-hoods)
